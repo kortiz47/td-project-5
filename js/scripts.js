@@ -1,8 +1,10 @@
 //GLOBAL VARIABLES
 const gallery = document.querySelector('#gallery');
-const cards = document.querySelectorAll('.card');
 
-//FETCH DATA FROM API
+const cards = document.querySelectorAll('.card');
+const newVar = [];
+//Retrieves Data of 12 Random Employees
+
 async function getRandomData(){
     const request = await fetch('https://randomuser.me/api/?results=12&nat=us')
         .then(response=>response.json())
