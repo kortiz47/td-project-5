@@ -1,6 +1,6 @@
 //Global Variables
 const gallery = document.querySelector('#gallery');
-
+const newVar = [];
 //Retrieves Data of 12 Random Employees
 
 async function getRandomData(){
