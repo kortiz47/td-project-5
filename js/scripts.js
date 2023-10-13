@@ -94,25 +94,39 @@ searchContainer.insertAdjacentHTML('beforeend', searchMarkup);
 const form = document.querySelector('form');
 function search(){
     const userInput = form.querySelector('#search-input').value.toLowerCase();
+    
+
     randomEmployeeData.forEach(employee =>{
         const firstName = employee.name.first;
         const lastName = employee.name.last;
         const fullName = `${firstName.toLowerCase()} ${lastName.toLowerCase()}`;
         if(fullName.includes(userInput)){
-            const nameSearch = gallery.querySelectorAll('#name');
+            //select the h3 element that has the full name as the text content
+            //select the parentnode of the that element twice
+            //make it so that the style.display = 'block flex'
+        }else{
+            //we want the style.display = 'none'
+        }
+    })
+}
+
+
+/**
+ * const nameSearch = gallery.querySelectorAll('#name');
             console.log(nameSearch.includes(fullName));
-            if(nameSearch.includes(document.querySelector(''))){
+            if(nameSearch.includes(document.querySelector())){
                 console.log(fullName)
             }
             // nameSearch.forEach(element => {
             //     console.log(element);
             //     console.log(element.parentNode.parentNode);
             // })
-        }else{
-            //console.log('NOT included'+fullName)
-        }
-    })
-}
+ */
+
+
+
+
+
 
 // function prevAndNext(index){
 //     body.addEventListener('click', (e)=>{
