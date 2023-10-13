@@ -1,20 +1,22 @@
 //GLOBAL VARIABLES
 const gallery = document.querySelector('#gallery');
 
-const cards = document.querySelectorAll('.card');
-const newVar = [];
 //Retrieves Data of 12 Random Employees
 
 async function getRandomData(){
-    const request = await fetch('https://randomuser.me/api/?results=12&nat=us')
-        .then(response=>response.json())
-        .catch(error => console.error('There was an error reaching the Random User API - '+ error));
-    const rawData = await request.results;
-    galleryMarkup(rawData);
-    console.log(rawData);
-    return rawData;
+    try{
+        const request = await fetch('https://randomuser.me/api/?results=12&nat=us');
+        const promiseData = await request.json();
+        const resultData = promiseData.results;
+        galleryMarkup(resultData);
+        return resultData;
+
+    }catch(error){
+        console.log('There was an error reaching the Random User API - '+ error);
+    }
 }
 
+const data = getRandomData()
 //===============================DISPLAY CARDS==============================
 function galleryMarkup(employeeArray) {
     employeeArray.forEach(employee =>{
@@ -41,6 +43,7 @@ function birthday(dob){
     const newDateOrder = [splitDates[1],splitDates[2],splitDates[0]];
     return newDateOrder.join('/');
 }
+//===========================
 
 function modalMarkup(employee){
     const location = employee.location;
@@ -67,15 +70,19 @@ function modalMarkup(employee){
 
 
 //Calling initializing function
-getRandomData()
+
 
 //======================EVENT LISTENERS FOR EVERYTHING================
+
 gallery.addEventListener('click', (e)=>{
     if(e.target.closest('.card')){
         const card = e.target.closest('.card');
-        const fullName = card.querySelector('#name').textContent;
-        console.log(fullName)
-
+        const email = card.querySelector('.card-text').textContent;
+        console.log(data)
+        
+        // const find = rawData.find((employee)=>{employee.result.email === email});
+        // console.log(find)
+        
         
         //run the modal markup to display the markup 
     }
