@@ -101,7 +101,9 @@ body.addEventListener('click', (e)=>{
 body.addEventListener('click', (e)=>{
     if(!e.target.closest('.modal')){
         const modalContainer = e.target.closest('.modal-container');
-        modalContainer.remove();
+        if(modalContainer){
+            modalContainer.remove();
+        }
     }
 })
 
