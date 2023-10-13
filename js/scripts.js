@@ -1,23 +1,28 @@
 //GLOBAL VARIABLES
 const gallery = document.querySelector('#gallery');
+let randomEmployeeData; 
 
 //Retrieves Data of 12 Random Employees
 
-async function getRandomData(){
+async function getRandomEmployees(){
     try{
         const request = await fetch('https://randomuser.me/api/?results=12&nat=us');
         const promiseData = await request.json();
         const resultData = promiseData.results;
         galleryMarkup(resultData);
-        return resultData;
-
+        randomEmployeeData = resultData;
+        
     }catch(error){
         console.log('There was an error reaching the Random User API - '+ error);
     }
 }
 
-const data = getRandomData()
+
 //===============================DISPLAY CARDS==============================
+/**
+ * 
+ * @param {array} employeeArray 
+ */
 function galleryMarkup(employeeArray) {
     employeeArray.forEach(employee =>{
         const template = `
@@ -44,6 +49,10 @@ function birthday(dob){
     return newDateOrder.join('/');
 }
 //===========================
+/**
+ * 
+ * @param {object} employee - is the object that represents the employee that is selected when the modal div is clicked
+ */
 
 function modalMarkup(employee){
     const location = employee.location;
@@ -65,29 +74,25 @@ function modalMarkup(employee){
         </div>
     </div>
     `;
-    console.log(template); 
+    gallery.insertAdjacentHTML('afterend', template);
 }
 
 
 //Calling initializing function
-
 
 //======================EVENT LISTENERS FOR EVERYTHING================
 
 gallery.addEventListener('click', (e)=>{
     if(e.target.closest('.card')){
         const card = e.target.closest('.card');
-        const email = card.querySelector('.card-text').textContent;
-        console.log(data)
-        
-        // const find = rawData.find((employee)=>{employee.result.email === email});
-        // console.log(find)
-        
-        
-        //run the modal markup to display the markup 
+        const employeeEmail = card.querySelector('.card-text').textContent;
+        const find = randomEmployeeData.findIndex(employee => employee.email === employeeEmail);
+        modalMarkup(randomEmployeeData[find])
     }
 })
 //also an event listener for the x clicked to close (or remove the markup that was added)
 
 //same funciton passed here if the user clicks outsid of the modal box^
+
+getRandomEmployees();
 
