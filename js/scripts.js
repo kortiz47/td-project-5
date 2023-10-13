@@ -25,14 +25,14 @@ async function getRandomEmployees(){
  */
 function galleryMarkup(employeeArray) {
     employeeArray.forEach(employee =>{
-        const fullName = `${employee.name.first} ${employee.name.last}`
+        const fullName = `${employee.name.first}${employee.name.last}`
         const template = `
-        <div class="card">
+        <div class="card" id=${fullName}>
             <div class="card-img-container">
                 <img class="card-img" src="${employee.picture.large}" alt="profile picture">
             </div>
             <div class="card-info-container">
-                <h3 id="name" class="card-name cap">${fullName}</h3>
+                <h3 id="name" class="card-name cap">${employee.name.first} ${employee.name.last}</h3>
                 <p class="card-text">${employee.email}</p>
                 <p class="card-text cap">${employee.location.city}, ${employee.location.state}</p>
             </div>
@@ -92,22 +92,39 @@ const searchMarkup = `
 searchContainer.insertAdjacentHTML('beforeend', searchMarkup); 
 
 const form = document.querySelector('form');
+
 function search(){
     const userInput = form.querySelector('#search-input').value.toLowerCase();
-    
+    const allDisplayBox = gallery.querySelectorAll('.card')
+    const searchMatch = [];
 
     randomEmployeeData.forEach(employee =>{
         const firstName = employee.name.first;
         const lastName = employee.name.last;
         const fullName = `${firstName.toLowerCase()} ${lastName.toLowerCase()}`;
+        
         if(fullName.includes(userInput)){
-            //select the h3 element that has the full name as the text content
-            //select the parentnode of the that element twice
-            //make it so that the style.display = 'block flex'
-        }else{
-            //we want the style.display = 'none'
+            searchMatch.push(`${firstName}${lastName}`);
         }
     })
+    if(searchMatch.length === 0){
+        gallery.style.display = 'none';
+        //nice to have = it displays - no results found!
+    }else{
+        gallery.style.display = 'block flex';
+
+        searchMatch.forEach(result =>{
+                const displayBox = gallery.querySelector(`#${result}`);
+                console.log(displayBox)
+        })
+        // console.log(allDisplayBox)
+        // searchMatch.forEach(result=>{
+        //     const displayBox = gallery.querySelector(`#${result}`);
+        //     //displayBox.style.display = 'block flex';
+        //     console.log(displayBox)
+        // })
+    }
+
 }
 
 
@@ -126,37 +143,41 @@ function search(){
 
 
 
+//==============================PREV AND NEXT FUNCTIONS======================
+
+function prevModal(index){
+    const currentModal = document.querySelector('.modal-container');
+    currentModal.remove();
+    modalMarkup(randomEmployeeData[index-1]);
+}
+
+function nextModal(index){
+    const currentModal = document.querySelector('.modal-container');
+    currentModal.remove();
+    modalMarkup(randomEmployeeData[index+1]);
+}
 
 
-// function prevAndNext(index){
-//     body.addEventListener('click', (e)=>{
-//         if(e.target.closest('#modal-prev')){
-//             // const modalContainer = e.target.closest('.modal-container');
-//             // modalContainer.remove();
-//             // modalMarkup(randomEmployeeData[index-1])
-//             //remove the current modal - then run the modal function to display th 
-//             console.log(`the current modal index is ${index} and previous is ${index-1}`)
-//             //need to be restrictions on if current index is 0 then we disable the prev button
-//         }else if(e.target.closest('#modal-next')){
-//             console.log(`the current modal index is ${index} and next is ${index+1}`)
-//             //restrictions needed to if the current index is 11 then we disabled the next button
-//         }
-        
-//     })
-// }
-
+/** NEED TO FIGURE OUT HOW TO DISABLE NEXT AND PREV BUTTONS FOR LAST AND FIRST MODALS RESPECTIVELY 
+ * 
+ * if(index===11){
+        const nextBtn = document.querySelector('#modal-next');
+        nextBtn.disabled = true;
+    }
+ */
 
 //======================PREV NEXT BUTTONS=========================
 //use the same event listener you use for opening up the modal on the gallery and then potentially add if(prev button clicked change the screen displayed, if next change forward)
 //======================EVENT LISTENERS FOR EVERYTHING================
 
+let index = null;
 gallery.addEventListener('click', (e)=>{
     if(e.target.closest('.card')){
         const card = e.target.closest('.card');
         const employeeEmail = card.querySelector('.card-text').textContent;
         const find = randomEmployeeData.findIndex(employee => employee.email === employeeEmail);
-        modalMarkup(randomEmployeeData[find])
-        //prevAndNext(find)
+        modalMarkup(randomEmployeeData[find]);
+        index = find;
     }
 })
 
@@ -173,6 +194,14 @@ body.addEventListener('click', (e)=>{
         if(modalContainer){
             modalContainer.remove();
         }
+    }
+})
+
+body.addEventListener('click', (e)=>{
+    if(e.target.closest('#modal-prev')){
+        prevModal(index)
+    }else if(e.target.closest('#modal-next')){
+        nextModal(index)
     }
 })
 
