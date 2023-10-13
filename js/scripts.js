@@ -1,9 +1,9 @@
 //GLOBAL VARIABLES
 const gallery = document.querySelector('#gallery');
+const body = document.querySelector('body');
 let randomEmployeeData; 
 
 //Retrieves Data of 12 Random Employees
-
 async function getRandomEmployees(){
     try{
         const request = await fetch('https://randomuser.me/api/?results=12&nat=us');
@@ -48,7 +48,7 @@ function birthday(dob){
     const newDateOrder = [splitDates[1],splitDates[2],splitDates[0]];
     return newDateOrder.join('/');
 }
-//===========================
+
 /**
  * 
  * @param {object} employee - is the object that represents the employee that is selected when the modal div is clicked
@@ -77,9 +77,6 @@ function modalMarkup(employee){
     gallery.insertAdjacentHTML('afterend', template);
 }
 
-
-//Calling initializing function
-
 //======================EVENT LISTENERS FOR EVERYTHING================
 
 gallery.addEventListener('click', (e)=>{
@@ -90,6 +87,17 @@ gallery.addEventListener('click', (e)=>{
         modalMarkup(randomEmployeeData[find])
     }
 })
+
+body.addEventListener('click', (e)=>{
+    if(e.target.closest("div [class='modal']")){
+        const modalBox = e.target;
+        if(modalBox.textContent === 'X'){
+            const modalContainer = e.target.closest('.modal-container');
+            modalContainer.remove();
+        }
+    }
+})
+
 //also an event listener for the x clicked to close (or remove the markup that was added)
 
 //same funciton passed here if the user clicks outsid of the modal box^
