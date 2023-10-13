@@ -98,6 +98,13 @@ body.addEventListener('click', (e)=>{
     }
 })
 
+body.addEventListener('click', (e)=>{
+    if(!e.target.closest('.modal')){
+        const modalContainer = e.target.closest('.modal-container');
+        modalContainer.remove();
+    }
+})
+
 //also an event listener for the x clicked to close (or remove the markup that was added)
 
 //same funciton passed here if the user clicks outsid of the modal box^
