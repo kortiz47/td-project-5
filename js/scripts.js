@@ -1,6 +1,7 @@
 //GLOBAL VARIABLES
 const gallery = document.querySelector('#gallery');
 const body = document.querySelector('body');
+const searchContainer = document.querySelector('.search-container');
 let randomEmployeeData; 
 
 //Retrieves Data of 12 Random Employees
@@ -16,7 +17,6 @@ async function getRandomEmployees(){
         console.log('There was an error reaching the Random User API - '+ error);
     }
 }
-
 
 //===============================DISPLAY CARDS==============================
 /**
@@ -41,7 +41,7 @@ function galleryMarkup(employeeArray) {
     })
 }
 
-//===============================MODAL BELOW=================================
+//===============================MODAL CARDS=================================
 function birthday(dob){
     const dateOfBirth = dob.date.split('T');
     const splitDates = dateOfBirth[0].split('-');
@@ -72,10 +72,28 @@ function modalMarkup(employee){
             <p class="modal-text">${location.street.number} ${location.street.name}., ${location.city}, ${location.state} ${location.postcode}</p>
             <p class="modal-text">Birthday: ${birthday(employeeDOB)}</p>
         </div>
+        <div class="modal-btn-container">
+            <button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
+            <button type="button" id="modal-next" class="modal-next btn">Next</button>
+        </div>
     </div>
     `;
     gallery.insertAdjacentHTML('afterend', template);
 }
+
+//=======================SEARCH FEATURE===============================
+const searchMarkup = `
+    <form action="#" method="get">
+        <input type="search" id="search-input" class="search-input" placeholder="Search...">
+        <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
+    </form>
+`;
+searchContainer.insertAdjacentHTML('beforeend', searchMarkup); 
+
+
+
+
+
 
 //======================EVENT LISTENERS FOR EVERYTHING================
 
@@ -106,10 +124,6 @@ body.addEventListener('click', (e)=>{
         }
     }
 })
-
-//also an event listener for the x clicked to close (or remove the markup that was added)
-
-//same funciton passed here if the user clicks outsid of the modal box^
 
 getRandomEmployees();
 
