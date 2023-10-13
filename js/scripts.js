@@ -109,7 +109,22 @@ function search(){
     })
 }
 
+function prevAndNext(index){
+    body.addEventListener('click', (e)=>{
+        if(e.target.closest('#modal-prev')){
+            console.log(`the current modal index is ${index} and previous is ${index-1}`)
+            //need to be restrictions on if current index is 0 then we disable the prev button
+        }else if(e.target.closest('#modal-next')){
+            console.log(`the current modal index is ${index} and next is ${index+1}`)
+            //restrictions needed to if the current index is 11 then we disabled the next button
+        }
+        
+    })
+}
 
+
+//======================PREV NEXT BUTTONS=========================
+//use the same event listener you use for opening up the modal on the gallery and then potentially add if(prev button clicked change the screen displayed, if next change forward)
 //======================EVENT LISTENERS FOR EVERYTHING================
 
 gallery.addEventListener('click', (e)=>{
@@ -118,27 +133,27 @@ gallery.addEventListener('click', (e)=>{
         const employeeEmail = card.querySelector('.card-text').textContent;
         const find = randomEmployeeData.findIndex(employee => employee.email === employeeEmail);
         modalMarkup(randomEmployeeData[find])
+        prevAndNext(find)
     }
 })
 
+//this event listener removes the current modal container displayed if the x is clicked or outside of the modal container
 body.addEventListener('click', (e)=>{
-    if(e.target.closest("div [class='modal']")){
+    if(e.target.closest(".modal")){
         const modalBox = e.target;
         if(modalBox.textContent === 'X'){
             const modalContainer = e.target.closest('.modal-container');
             modalContainer.remove();
         }
-    }
-})
-
-body.addEventListener('click', (e)=>{
-    if(!e.target.closest('.modal')){
+    }else{
         const modalContainer = e.target.closest('.modal-container');
         if(modalContainer){
             modalContainer.remove();
         }
     }
 })
+
+
 
 form.addEventListener('submit', ()=>{
     search();
