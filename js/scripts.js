@@ -100,27 +100,36 @@ function search(){
         const fullName = `${firstName.toLowerCase()} ${lastName.toLowerCase()}`;
         if(fullName.includes(userInput)){
             const nameSearch = gallery.querySelectorAll('#name');
-            nameSearch.forEach(element => {
-                console.log(element.parentNode.parentNode);
-            })
+            console.log(nameSearch.includes(fullName));
+            if(nameSearch.includes(document.querySelector(''))){
+                console.log(fullName)
+            }
+            // nameSearch.forEach(element => {
+            //     console.log(element);
+            //     console.log(element.parentNode.parentNode);
+            // })
         }else{
             //console.log('NOT included'+fullName)
         }
     })
 }
 
-function prevAndNext(index){
-    body.addEventListener('click', (e)=>{
-        if(e.target.closest('#modal-prev')){
-            console.log(`the current modal index is ${index} and previous is ${index-1}`)
-            //need to be restrictions on if current index is 0 then we disable the prev button
-        }else if(e.target.closest('#modal-next')){
-            console.log(`the current modal index is ${index} and next is ${index+1}`)
-            //restrictions needed to if the current index is 11 then we disabled the next button
-        }
+// function prevAndNext(index){
+//     body.addEventListener('click', (e)=>{
+//         if(e.target.closest('#modal-prev')){
+//             // const modalContainer = e.target.closest('.modal-container');
+//             // modalContainer.remove();
+//             // modalMarkup(randomEmployeeData[index-1])
+//             //remove the current modal - then run the modal function to display th 
+//             console.log(`the current modal index is ${index} and previous is ${index-1}`)
+//             //need to be restrictions on if current index is 0 then we disable the prev button
+//         }else if(e.target.closest('#modal-next')){
+//             console.log(`the current modal index is ${index} and next is ${index+1}`)
+//             //restrictions needed to if the current index is 11 then we disabled the next button
+//         }
         
-    })
-}
+//     })
+// }
 
 
 //======================PREV NEXT BUTTONS=========================
@@ -133,7 +142,7 @@ gallery.addEventListener('click', (e)=>{
         const employeeEmail = card.querySelector('.card-text').textContent;
         const find = randomEmployeeData.findIndex(employee => employee.email === employeeEmail);
         modalMarkup(randomEmployeeData[find])
-        prevAndNext(find)
+        //prevAndNext(find)
     }
 })
 
