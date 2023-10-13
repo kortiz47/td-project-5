@@ -25,13 +25,14 @@ async function getRandomEmployees(){
  */
 function galleryMarkup(employeeArray) {
     employeeArray.forEach(employee =>{
+        const fullName = `${employee.name.first} ${employee.name.last}`
         const template = `
         <div class="card">
             <div class="card-img-container">
                 <img class="card-img" src="${employee.picture.large}" alt="profile picture">
             </div>
             <div class="card-info-container">
-                <h3 id="name" class="card-name cap">${employee.name.first} ${employee.name.last}</h3>
+                <h3 id="name" class="card-name cap">${fullName}</h3>
                 <p class="card-text">${employee.email}</p>
                 <p class="card-text cap">${employee.location.city}, ${employee.location.state}</p>
             </div>
@@ -90,9 +91,23 @@ const searchMarkup = `
 `;
 searchContainer.insertAdjacentHTML('beforeend', searchMarkup); 
 
-
-
-
+const form = document.querySelector('form');
+function search(){
+    const userInput = form.querySelector('#search-input').value.toLowerCase();
+    randomEmployeeData.forEach(employee =>{
+        const firstName = employee.name.first;
+        const lastName = employee.name.last;
+        const fullName = `${firstName.toLowerCase()} ${lastName.toLowerCase()}`;
+        if(fullName.includes(userInput)){
+            const nameSearch = gallery.querySelectorAll('#name');
+            nameSearch.forEach(element => {
+                console.log(element.parentNode.parentNode);
+            })
+        }else{
+            //console.log('NOT included'+fullName)
+        }
+    })
+}
 
 
 //======================EVENT LISTENERS FOR EVERYTHING================
@@ -123,6 +138,10 @@ body.addEventListener('click', (e)=>{
             modalContainer.remove();
         }
     }
+})
+
+form.addEventListener('submit', ()=>{
+    search();
 })
 
 getRandomEmployees();
