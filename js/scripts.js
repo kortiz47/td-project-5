@@ -1,4 +1,5 @@
 //GLOBAL VARIABLES
+
 const gallery = document.querySelector('#gallery');
 const body = document.querySelector('body');
 const searchContainer = document.querySelector('.search-container');
@@ -18,12 +19,13 @@ async function getRandomEmployees(){
     }
 }
 
-//===============================DISPLAY CARDS==============================
+//===============================DISPLAY CARDS function==============================
 /**
  * 
  * @param {array} employeeArray 
  */
 function galleryMarkup(employeeArray) {
+    gallery.innerHTML = '';
     employeeArray.forEach(employee =>{
         const fullName = `${employee.name.first}${employee.name.last}`
         const template = `
@@ -43,13 +45,6 @@ function galleryMarkup(employeeArray) {
 }
 
 //===============================MODAL CARDS=================================
-function birthday(dob){
-    const dateOfBirth = dob.date.split('T');
-    const splitDates = dateOfBirth[0].split('-');
-    const newDateOrder = [splitDates[1],splitDates[2],splitDates[0]];
-    return newDateOrder.join('/');
-}
-
 /**
  * 
  * @param {object} employee - is the object that represents the employee that is selected when the modal div is clicked
@@ -82,6 +77,13 @@ function modalMarkup(employee){
     gallery.insertAdjacentHTML('afterend', template);
 }
 
+function birthday(dob){
+    const dateOfBirth = dob.date.split('T');
+    const splitDates = dateOfBirth[0].split('-');
+    const newDateOrder = [splitDates[1],splitDates[2],splitDates[0]];
+    return newDateOrder.join('/');
+}
+
 //=======================SEARCH FEATURE===============================
 const searchMarkup = `
     <form action="#" method="get">
@@ -90,12 +92,11 @@ const searchMarkup = `
     </form>
 `;
 searchContainer.insertAdjacentHTML('beforeend', searchMarkup); 
-
 const form = document.querySelector('form');
 
 function search(){
     const userInput = form.querySelector('#search-input').value.toLowerCase();
-    const allDisplayBox = gallery.querySelectorAll('.card')
+
     const searchMatch = [];
 
     randomEmployeeData.forEach(employee =>{
@@ -104,44 +105,16 @@ function search(){
         const fullName = `${firstName.toLowerCase()} ${lastName.toLowerCase()}`;
         
         if(fullName.includes(userInput)){
-            searchMatch.push(`${firstName}${lastName}`);
+            searchMatch.push(employee);
         }
     })
-    if(searchMatch.length === 0){
-        gallery.style.display = 'none';
-        //nice to have = it displays - no results found!
+    if(searchMatch.length >0){
+        galleryMarkup(searchMatch);
     }else{
-        gallery.style.display = 'block flex';
-
-        searchMatch.forEach(result =>{
-                const displayBox = gallery.querySelector(`#${result}`);
-                console.log(displayBox)
-        })
-        // console.log(allDisplayBox)
-        // searchMatch.forEach(result=>{
-        //     const displayBox = gallery.querySelector(`#${result}`);
-        //     //displayBox.style.display = 'block flex';
-        //     console.log(displayBox)
-        // })
+        gallery.innerHTML = 'Sorry, no results found.'
     }
 
 }
-
-
-/**
- * const nameSearch = gallery.querySelectorAll('#name');
-            console.log(nameSearch.includes(fullName));
-            if(nameSearch.includes(document.querySelector())){
-                console.log(fullName)
-            }
-            // nameSearch.forEach(element => {
-            //     console.log(element);
-            //     console.log(element.parentNode.parentNode);
-            // })
- */
-
-
-
 
 //==============================PREV AND NEXT FUNCTIONS======================
 
@@ -205,9 +178,11 @@ body.addEventListener('click', (e)=>{
     }
 })
 
-
-
 form.addEventListener('submit', ()=>{
+    search();
+})
+
+form.addEventListener('keyup', ()=>{
     search();
 })
 
