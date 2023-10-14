@@ -1,11 +1,10 @@
-//GLOBAL VARIABLES
-
+//===================================GLOBAL VARIABLES=================================
 const gallery = document.querySelector('#gallery');
 const body = document.querySelector('body');
 const searchContainer = document.querySelector('.search-container');
 let randomEmployeeData; 
 
-//Retrieves Data of 12 Random Employees
+//===================================FETCH API DATA===================================
 async function getRandomEmployees(){
     try{
         const request = await fetch('https://randomuser.me/api/?results=12&nat=us');
@@ -18,8 +17,7 @@ async function getRandomEmployees(){
         console.log('There was an error reaching the Random User API - '+ error);
     }
 }
-
-//===============================DISPLAY CARDS function==============================
+//===============================DISPLAY GALLERY CARDS function==============================
 /**
  * 
  * @param {array} employeeArray 
@@ -43,7 +41,6 @@ function galleryMarkup(employeeArray) {
         gallery.insertAdjacentHTML('beforeend', template);
     })
 }
-
 //===============================MODAL CARDS=================================
 /**
  * 
@@ -115,19 +112,29 @@ function search(){
     }
 
 }
-
 //==============================PREV AND NEXT FUNCTIONS======================
 
 function prevModal(index){
     const currentModal = document.querySelector('.modal-container');
     currentModal.remove();
-    modalMarkup(randomEmployeeData[index-1]);
+    if(index === 0){
+        const prevBtn = currentModal.querySelector('#modal-prev');
+        prevBtn.disabled = true;
+    }else{
+        modalMarkup(randomEmployeeData[index-1]);
+    }
 }
 
 function nextModal(index){
     const currentModal = document.querySelector('.modal-container');
     currentModal.remove();
-    modalMarkup(randomEmployeeData[index+1]);
+    if(index === 11){
+        const nextBtn = currentModal.querySelector('#modal-next');
+        nextBtn.disabled = true;
+    }else{
+        modalMarkup(randomEmployeeData[index+1]);
+    }
+    
 }
 
 
@@ -139,8 +146,6 @@ function nextModal(index){
     }
  */
 
-//======================PREV NEXT BUTTONS=========================
-//use the same event listener you use for opening up the modal on the gallery and then potentially add if(prev button clicked change the screen displayed, if next change forward)
 //======================EVENT LISTENERS FOR EVERYTHING================
 
 let index = null;
@@ -173,8 +178,10 @@ body.addEventListener('click', (e)=>{
 body.addEventListener('click', (e)=>{
     if(e.target.closest('#modal-prev')){
         prevModal(index)
+        index-=1
     }else if(e.target.closest('#modal-next')){
         nextModal(index)
+        index+=1
     }
 })
 
