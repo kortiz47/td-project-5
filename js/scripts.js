@@ -5,6 +5,10 @@ const searchContainer = document.querySelector('.search-container');
 let randomEmployeeData; 
 
 //===================================FETCH API DATA===================================
+
+/**
+ * getRandomEmployees fetches the data from the Random User API
+ */
 async function getRandomEmployees(){
     try{
         const request = await fetch('https://randomuser.me/api/?results=12&nat=us');
@@ -12,7 +16,6 @@ async function getRandomEmployees(){
         const resultData = promiseData.results;
         galleryMarkup(resultData);
         randomEmployeeData = resultData;
-        
     }catch(error){
         console.log('There was an error reaching the Random User API - '+ error);
     }
