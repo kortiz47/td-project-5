@@ -22,7 +22,7 @@ async function getRandomEmployees(){
 }
 //===============================DISPLAY GALLERY CARDS function==============================
 /**
- * 
+ * galleryMarkup function takest the employee data fetched from the random employee API and creates the gallery HTML to append to the page
  * @param {array} employeeArray 
  */
 function galleryMarkup(employeeArray) {
@@ -46,7 +46,7 @@ function galleryMarkup(employeeArray) {
 }
 //===============================MODAL CARDS=================================
 /**
- * 
+ * modalMarkup function grabs a single employee object when its gallery card is clicked and creates and appends the corresponding html
  * @param {object} employee - is the object that represents the employee that is selected when the modal div is clicked
  */
 
@@ -77,6 +77,11 @@ function modalMarkup(employee){
     gallery.insertAdjacentHTML('afterend', template);
 }
 
+/**
+ * birthday function grabs the dob property from the employee object and rewrites it using array methods to be in the format mm/dd/yyyy to add to modal markup
+ * @param {object} dob 
+ * @returns string
+ */
 function birthday(dob){
     const dateOfBirth = dob.date.split('T');
     const splitDates = dateOfBirth[0].split('-');
@@ -84,7 +89,7 @@ function birthday(dob){
     return newDateOrder.join('/');
 }
 
-//=======================SEARCH FEATURE===============================
+//==================================SEARCH FEATURE=====================================
 const searchMarkup = `
     <form action="#" method="get">
         <input type="search" id="search-input" class="search-input" placeholder="Search...">
@@ -94,6 +99,9 @@ const searchMarkup = `
 searchContainer.insertAdjacentHTML('beforeend', searchMarkup); 
 const form = document.querySelector('form');
 
+/**
+ * the search function creates allows a user to search the employee directory by name and only see their gallery card when searched
+ */
 function search(){
     const userInput = form.querySelector('#search-input').value.toLowerCase();
 
@@ -117,6 +125,10 @@ function search(){
 }
 //==============================PREV AND NEXT FUNCTIONS======================
 
+/**
+ * the prevModal function allows a user to click the previous button on an open modal window to go to previous employees 
+ * @param {number} index - the current index of the employee card clicked
+ */
 function prevModal(index){
     const currentModal = document.querySelector('.modal-container');
     currentModal.remove();
@@ -127,7 +139,10 @@ function prevModal(index){
         modalMarkup(randomEmployeeData[index-1]);
     }
 }
-
+/**
+ * the nextModal function allows a user to click the next button on an open modal window to go to upcoming employees 
+ * @param {number} index - the current index of the employee card clicked
+ */
 function nextModal(index){
     const currentModal = document.querySelector('.modal-container');
     currentModal.remove();
@@ -140,18 +155,11 @@ function nextModal(index){
     
 }
 
-
-/** NEED TO FIGURE OUT HOW TO DISABLE NEXT AND PREV BUTTONS FOR LAST AND FIRST MODALS RESPECTIVELY 
- * 
- * if(index===11){
-        const nextBtn = document.querySelector('#modal-next');
-        nextBtn.disabled = true;
-    }
- */
-
-//======================EVENT LISTENERS FOR EVERYTHING================
+//======================EVENT LISTENERS===========================
 
 let index = null;
+
+//event listener on the gallery display when a user clicks on the gallery card, a modal window opens for that employee
 gallery.addEventListener('click', (e)=>{
     if(e.target.closest('.card')){
         const card = e.target.closest('.card');
@@ -178,6 +186,7 @@ body.addEventListener('click', (e)=>{
     }
 })
 
+//event listener on the body of the document when the previous and next buttons are clicked
 body.addEventListener('click', (e)=>{
     if(e.target.closest('#modal-prev')){
         prevModal(index)
@@ -188,13 +197,17 @@ body.addEventListener('click', (e)=>{
     }
 })
 
+//user can search employees on submit event
 form.addEventListener('submit', ()=>{
     search();
 })
 
+//user can search employees on keyup event
 form.addEventListener('keyup', ()=>{
     search();
 })
 
+
+//Initiallizes the API call and allows the app to run
 getRandomEmployees();
 
